@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RoleplayGame.Characters;
+using System;
 
 namespace RoleplayGame.Scenarios;
 public class FourMembersScenario : IScenario
@@ -28,11 +29,50 @@ public class FourMembersScenario : IScenario
     {
         foreach(Character character in Characters)
         {
-            character.Items= new List<Items.IItem> () {};
+            foreach(Items.IItem item in character.Items)
+            {
+                character.Items.Remove(item);
+            }
         }
     }
     public void Run()
     {
-        Encounters.EncounterType FirstVsSecond= Encounters.EncounterFactory.GetEncounter(1, )
+        Encounters.Encounter FirstVsSecond= Encounters.EncounterFactory.GetEncounter(Encounters.EncounterType.Attack, this.First, this.Second);
+        Encounters.Encounter ThirdVsForth= Encounters.EncounterFactory.GetEncounter(Encounters.EncounterType.Attack, this.Third, this.Forth);
+        Console.WriteLine(FirstVsSecond.ToString());
+        FirstVsSecond.DoEncounter();
+        Console.WriteLine(ThirdVsForth.ToString());
+        ThirdVsForth.DoEncounter();
+        if(!this.First.IsDead)
+        {
+            if(!this.Third.IsDead)
+            {
+                Encounters.Encounter FirstVsThird= Encounters.EncounterFactory.GetEncounter(Encounters.EncounterType.Attack, this.First, this.Third);
+                Console.WriteLine(FirstVsThird.ToString());
+                FirstVsThird.DoEncounter();
+            }
+            else
+            {
+                Encounters.Encounter FirstVsForth= Encounters.EncounterFactory.GetEncounter(Encounters.EncounterType.Attack, this.First, this.Forth);
+                Console.WriteLine(FirstVsForth.ToString());
+                FirstVsForth.DoEncounter();
+            }
+        }
+        else
+        {
+            if(!this.Third.IsDead)
+            {
+                Encounters.Encounter SecondVsThird= Encounters.EncounterFactory.GetEncounter(Encounters.EncounterType.Attack, this.First, this.Third);
+                Console.WriteLine(SecondVsThird.ToString());
+                SecondVsThird.DoEncounter();
+            }
+            else
+            {
+                Encounters.Encounter SecondVsForth= Encounters.EncounterFactory.GetEncounter(Encounters.EncounterType.Attack, this.Second, this.Forth);
+                Console.WriteLine(SecondVsForth.ToString());
+                SecondVsForth.DoEncounter();
+            }
+        }
+
     }
 }
