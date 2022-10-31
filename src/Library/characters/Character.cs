@@ -75,6 +75,11 @@ namespace RoleplayGame.Characters
             this.Items.Remove(item);
         }
 
+        public void CleanItem()
+        {
+            this.items= new List<IItem> ();
+        }
+
         /// <summary>
         /// Calcula y devuelve el valor de ataque del personaje.
         /// </summary>
