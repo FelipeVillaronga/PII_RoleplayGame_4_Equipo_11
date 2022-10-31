@@ -99,6 +99,14 @@ namespace RoleplayGame.Characters
         /// Calcula y devuelve el valor de defensa del personaje.
         /// </summary>
         /// <value>El valor de defensa.</value>
+        
+
+        public List<Gemas> Gems {get; set;}
+
+        public void addGem()
+        {
+            this.Gems.Add(new Gemas());
+        }
         public int DefensePower
         {
             get
