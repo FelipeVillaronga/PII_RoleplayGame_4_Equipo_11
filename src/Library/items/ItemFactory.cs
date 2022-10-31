@@ -11,6 +11,8 @@ namespace RoleplayGame.Items
         Stick = 4,
         BreastPlate = 5,
         PowerGlove= 6,
+        Dagger = 7,
+        ChainMail = 8,
     }
 
     /// <summary>
@@ -33,6 +35,8 @@ namespace RoleplayGame.Items
                 case ItemType.Stick: return new Stick();
                 case ItemType.BreastPlate: return new Breastplate();
                 case ItemType.PowerGlove: return new PowerGlove();
+                case ItemType.ChainMail: return new ChainMail();
+                case ItemType.Dagger: return new Dagger();
 
                 default: return null;
             }
