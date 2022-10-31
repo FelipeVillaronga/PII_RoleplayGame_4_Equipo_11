@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using RoleplayGame.Characters;
 using RoleplayGame.Items;
+using RoleplayGame.Encounters;
 using System;
 
 namespace RoleplayGame.Scenarios;
@@ -14,6 +15,8 @@ public class FourMembersScenario : IScenario
         this.Third= third;
         this.Forth= forth;
         this.CharactersList= new List<Character> () {this.First, this.Second, this.Third, this.Forth};
+        this.FirstVsSecond= EncounterFactory.GetEncounter(EncounterType.Attack, this.First, this.Second);
+        this.ThirdVsForth= EncounterFactory.GetEncounter(EncounterType.Attack, this.Third, this.Forth);
     }
     private Character first {get; set;}
     private Character second {get; set;}
@@ -25,59 +28,58 @@ public class FourMembersScenario : IScenario
     public Character Third {get; set;}
     public Character Forth {get; set;}
 
+    public Encounter FirstVsSecond {get; set;}
+    public Encounter ThirdVsForth {get; set;}
+    public Encounter Winners {get; set;}
     public List<Character> CharactersList {get; set;}
     public void Setup()
     {
         foreach(Character character in CharactersList)
         {
-            foreach(Items.IItem item in character.Items)
-            {
-                character.Items.Remove(item);
-            }
+            character.CleanItem();
         }
-        CharactersList[0].AddItems(new List<Items.IItem> () {new MagicWand(), new PowerGlove()});
-        CharactersList[1].AddItems(new List<Items.IItem> () {new Stick(), new Robes()});
-        CharactersList[2].AddItems(new List<Items.IItem> () {new Breastplate(), new ChainMail()});
-        CharactersList[3].AddItems(new List<Items.IItem> () {new Dagger(), new MagicWand()});
+        CharactersList[0].AddItems(new List<IItem> () {new MagicWand(), new PowerGlove()});
+        CharactersList[1].AddItems(new List<IItem> () {new Stick(), new Robes()});
+        CharactersList[2].AddItems(new List<IItem> () {new Breastplate(), new ChainMail()});
+        CharactersList[3].AddItems(new List<IItem> () {new Dagger(), new MagicWand()});
     }
     public void Run()
-    {
-        Encounters.Encounter FirstVsSecond= Encounters.EncounterFactory.GetEncounter(Encounters.EncounterType.Attack, this.First, this.Second);
-        Encounters.Encounter ThirdVsForth= Encounters.EncounterFactory.GetEncounter(Encounters.EncounterType.Attack, this.Third, this.Forth);
+    {   
         Console.WriteLine(FirstVsSecond.ToString());
         FirstVsSecond.DoEncounter();
         Console.WriteLine(ThirdVsForth.ToString());
         ThirdVsForth.DoEncounter();
+        Survivors();
+    }
+    public void Survivors()
+    {
         if(!this.First.IsDead)
         {
             if(!this.Third.IsDead)
             {
-                Encounters.Encounter FirstVsThird= Encounters.EncounterFactory.GetEncounter(Encounters.EncounterType.Attack, this.First, this.Third);
-                Console.WriteLine(FirstVsThird.ToString());
-                FirstVsThird.DoEncounter();
+                this.Winners= EncounterFactory.GetEncounter(EncounterType.Attack, this.First, this.Third);
             }
             else
             {
-                Encounters.Encounter FirstVsForth= Encounters.EncounterFactory.GetEncounter(Encounters.EncounterType.Attack, this.First, this.Forth);
-                Console.WriteLine(FirstVsForth.ToString());
-                FirstVsForth.DoEncounter();
+                this.Winners= EncounterFactory.GetEncounter(EncounterType.Attack, this.First, this.Forth);
             }
         }
         else
         {
             if(!this.Third.IsDead)
             {
-                Encounters.Encounter SecondVsThird= Encounters.EncounterFactory.GetEncounter(Encounters.EncounterType.Attack, this.First, this.Third);
-                Console.WriteLine(SecondVsThird.ToString());
-                SecondVsThird.DoEncounter();
+                this.Winners= EncounterFactory.GetEncounter(EncounterType.Attack, this.First, this.Third);
             }
             else
             {
-                Encounters.Encounter SecondVsForth= Encounters.EncounterFactory.GetEncounter(Encounters.EncounterType.Attack, this.Second, this.Forth);
-                Console.WriteLine(SecondVsForth.ToString());
-                SecondVsForth.DoEncounter();
+                this.Winners= EncounterFactory.GetEncounter(EncounterType.Attack, this.Second, this.Forth);
             }
         }
+    }
 
+    public void Finale()
+    {
+        Console.WriteLine(this.Winners.ToString());
+        this.Winners.DoEncounter();
     }
 }
