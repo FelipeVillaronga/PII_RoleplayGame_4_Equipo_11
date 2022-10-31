@@ -9,7 +9,7 @@ namespace RoleplayGame.Items
         Characters.Character character;
         public List<Gemas> GemasAdded {get; set;}
         public int Damage {get; set;}
-        public PowerGlove(IAttackItem one, IAttackItem two)
+        public PowerGlove()
         {
             this.GemasAdded= new List<Gemas>();
             this.AttackPower = 5*(GemasAdded.Count);
