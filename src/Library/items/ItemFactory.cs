@@ -10,6 +10,7 @@ namespace RoleplayGame.Items
         MagicWand = 3,
         Stick = 4,
         BreastPlate = 5,
+        PowerGlove= 6,
     }
 
     /// <summary>
@@ -31,6 +32,7 @@ namespace RoleplayGame.Items
                 case ItemType.MagicWand: return new MagicWand();
                 case ItemType.Stick: return new Stick();
                 case ItemType.BreastPlate: return new Breastplate();
+                case ItemType.PowerGlove: return new PowerGlove();
 
                 default: return null;
             }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RoleplayGame.Characters;
+using RoleplayGame.Items;
 using System;
 
 namespace RoleplayGame.Scenarios;
@@ -12,7 +13,7 @@ public class FourMembersScenario : IScenario
         this.Second= second;
         this.Third= third;
         this.Forth= forth;
-        this.Characters= new List<Character> () {this.First, this.Second, this.Third, this.Forth};
+        this.CharactersList= new List<Character> () {this.First, this.Second, this.Third, this.Forth};
     }
     private Character first {get; set;}
     private Character second {get; set;}
@@ -24,16 +25,20 @@ public class FourMembersScenario : IScenario
     public Character Third {get; set;}
     public Character Forth {get; set;}
 
-    public List<Character> Characters {get; set;}
+    public List<Character> CharactersList {get; set;}
     public void Setup()
     {
-        foreach(Character character in Characters)
+        foreach(Character character in CharactersList)
         {
             foreach(Items.IItem item in character.Items)
             {
                 character.Items.Remove(item);
             }
         }
+        CharactersList[0].AddItems(new List<Items.IItem> () {new MagicWand(), new PowerGlove()});
+        CharactersList[1].AddItems(new List<Items.IItem> () {new Stick(), new Robes()});
+        CharactersList[2].AddItems(new List<Items.IItem> () {new Breastplate(), new ChainMail()});
+        CharactersList[3].AddItems(new List<Items.IItem> () {new Dagger(), new MagicWand()});
     }
     public void Run()
     {
